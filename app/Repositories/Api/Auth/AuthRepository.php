@@ -9,17 +9,18 @@ use Exception;
 
 class AuthRepository implements AuthInterface
 {
-    // use ResponseBuilder;
+    use ResponseBuilder;
 
     public function login()
     {
         try {
-            Log::info(request()->header());
-            // return $this->success();
+            // Log::info(request()->header());
+
+            return $this->success('jalan');
         } catch (Exception $e) {
             // $this->report($e);
 
-            // return $this->error(400, null, 'Whoops, looks like something went wrong #index');
+            return $this->error(400, null, 'Whoops, looks like something went wrong #index');
         }
     }
 }
