@@ -18,5 +18,6 @@ use App\Http\Controllers\Api\Auth\AuthController;
 
 // Auth
 Route::prefix('/auth')->group(function () {
-    Route::get('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
 });

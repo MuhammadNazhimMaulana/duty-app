@@ -2,7 +2,11 @@
 
 namespace App\Interfaces\Api\Auth;
 
+use App\Http\Requests\Auth\{RegisterRequest, LoginRequest, ConfirmResetPasswordRequest};
+
 interface AuthInterface
 {
-    public function login();
+    public function login(LoginRequest $request);
+
+    public function register(RegisterRequest $request);
 }
