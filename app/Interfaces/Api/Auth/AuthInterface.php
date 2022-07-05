@@ -9,4 +9,6 @@ interface AuthInterface
     public function login(LoginRequest $request);
 
     public function register(RegisterRequest $request);
+
+    public function resetPassword($request);
 }

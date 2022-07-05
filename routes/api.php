@@ -20,4 +20,8 @@ use App\Http\Controllers\Api\Auth\AuthController;
 Route::prefix('/auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 });
+
+// Route::middleware('auth:sanctum')->group(function () {
+// });

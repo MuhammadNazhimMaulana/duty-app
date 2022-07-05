@@ -6,9 +6,12 @@ use App\Interfaces\Api\Auth\AuthInterface;
 use App\Traits\{ResponseBuilder};
 use App\Models\{User, VerificationCode};
 use App\Http\Requests\Auth\{RegisterRequest, LoginRequest, ConfirmResetPasswordRequest};
+use App\Mail\ForgetPasswordMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Exception;
 
 class AuthRepository implements AuthInterface
@@ -76,4 +79,63 @@ class AuthRepository implements AuthInterface
             return $this->error(400, null, 'Sepertinya ada yang salah dengan register');
         }
     }
+
+    public function resetPassword($request)
+    {
+        DB::beginTransaction();
+        try {
+            // Finding Email
+            $user = User::where('email', $request->email)->first();
+            if(!$user) return $this->error(404, null, 'Email tidak ditemukan');
+
+            $code = $this->generateUniqueCode();
+
+            $body = [
+                'title' => 'Reset Password',
+                'code' => $code
+            ];
+
+            // Find verfication code
+            $vCode = VerificationCode::where('user_id', $user->id)->first();
+            
+            // Save the verification code
+            if ($vCode) {
+                if (Carbon::parse($vCode->updated_at)->diffInMinutes(Carbon::now()) >= 1) {
+                    $vCode->code = $code;
+                    $vCode->expired_at = Carbon::now()->addMinutes(1);
+                    $vCode->save();
+
+                    // Send mail
+                    Mail::to($user->email)->send(new ForgetPasswordMail($body));
+                } else {
+                    $code = $vCode->code;
+
+                    // Message, the same code
+                    return $this->success('Kode Verifikasi Masih Sama');
+                }
+            } else {
+                $newCode = new VerificationCode();
+                $newCode->user_id = $user->id;
+                $newCode->code = $code;
+                $newCode->expired_at = Carbon::now()->addMinutes(1);
+                $newCode->save();
+
+                // Send mail
+                Mail::to($user->email)->send(new ForgetPasswordMail($body));
+            }
+
+                // Commit
+                DB::commit();
+            return $this->success();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $this->error(400, null, $e->getMessage());
+        }        
+    }
+
+    // Unique Code
+    private function generateUniqueCode(): string
+    {
+        return (string) rand(111111, 999999);
+    }    
 }

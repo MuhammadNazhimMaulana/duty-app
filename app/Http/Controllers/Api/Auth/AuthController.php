@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Interfaces\Api\Auth\AuthInterface;
 use App\Http\Requests\Auth\{RegisterRequest, LoginRequest, ConfirmResetPasswordRequest};
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -21,5 +22,10 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         return $this->authInterface->register($request);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        return $this->authInterface->resetPassword($request);
     }
 }
