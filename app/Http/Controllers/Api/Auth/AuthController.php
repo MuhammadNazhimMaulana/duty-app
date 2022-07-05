@@ -33,4 +33,9 @@ class AuthController extends Controller
     {
         return $this->authInterface->confirmResetPassword($request);
     }
+
+    public function logout()
+    {
+        return $this->authInterface->logout();
+    }
 }

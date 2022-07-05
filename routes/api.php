@@ -24,5 +24,11 @@ Route::prefix('/auth')->group(function () {
     Route::post('/confirm-reset-password', [AuthController::class, 'confirmResetPassword']);
 });
 
-// Route::middleware('auth:sanctum')->group(function () {
-// });
+// Need Login
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::prefix('/auth')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+    });
+
+});

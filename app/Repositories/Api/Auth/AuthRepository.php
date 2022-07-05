@@ -169,6 +169,24 @@ class AuthRepository implements AuthInterface
         }
     }
 
+    public function logout()
+    {
+        try {
+            // Getting Request Sender Information
+            $uid = request()->user();
+
+            // Finding User
+            $user = User::find($uid->id);
+
+            // Delete Token
+            $user->tokens()->delete();
+            
+            return $this->success();
+        } catch (Exception $e) {
+            return $this->error(400, null, 'Sepertinya ada yang salah dengan Logout');
+        }
+    }
+
     // Unique Code
     private function generateUniqueCode(): string
     {

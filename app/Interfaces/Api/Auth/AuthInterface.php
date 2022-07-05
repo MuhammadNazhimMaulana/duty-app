@@ -13,4 +13,6 @@ interface AuthInterface
     public function resetPassword($request);
 
     public function confirmResetPassword(ConfirmResetPasswordRequest $request);
+
+    public function logout();
 }
