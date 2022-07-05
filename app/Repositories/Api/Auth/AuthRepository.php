@@ -133,6 +133,42 @@ class AuthRepository implements AuthInterface
         }        
     }
 
+    public function confirmResetPassword(ConfirmResetPasswordRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            // Today's time
+            $now = Carbon::now();
+
+            // Checking Password Confirmation
+            if($request->password !== $request->password_confirmation) return $this->error(422, null, 'Password dan Konfirmasi Harus sama');
+
+            // Finding Email
+            $user = User::where('email', $request->email)->first();
+            if(!$user) return $this->error(404, null, 'Email tidak ditemukan');
+
+            // Find verfication code
+            $vCode = VerificationCode::where('user_id', $user->id)->first();
+
+            // Checking expiration time
+            if($now->diffInMinutes($vCode->expired_at) > 1) return $this->error(422, null, 'Kode Verifikasi Expired');
+
+            // Chacking the code
+            if($request->code != $vCode->code) return $this->error(422, null, 'Kode Verifikasi Salah');
+
+            // If everythingh is good
+            $user->password = Hash::make($request->password);
+            $user->save();
+
+            // Commit
+            DB::commit();
+            return $this->success();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $this->error(400, null, $e->getMessage());
+        }
+    }
+
     // Unique Code
     private function generateUniqueCode(): string
     {

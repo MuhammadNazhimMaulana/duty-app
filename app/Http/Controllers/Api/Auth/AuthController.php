@@ -28,4 +28,9 @@ class AuthController extends Controller
     {
         return $this->authInterface->resetPassword($request);
     }
+
+    public function confirmResetPassword(ConfirmResetPasswordRequest $request)
+    {
+        return $this->authInterface->confirmResetPassword($request);
+    }
 }

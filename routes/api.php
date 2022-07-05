@@ -21,6 +21,7 @@ Route::prefix('/auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+    Route::post('/confirm-reset-password', [AuthController::class, 'confirmResetPassword']);
 });
 
 // Route::middleware('auth:sanctum')->group(function () {
