@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Auth\Auth_Controller_A;
+use App\Http\Controllers\Api\User\{UserController};
 use App\Http\Controllers\Api\Auth\AuthController;
 
 /*
@@ -27,8 +27,14 @@ Route::prefix('/auth')->group(function () {
 // Need Login
 Route::middleware('auth:sanctum')->group(function () {
 
+    // Auth
     Route::prefix('/auth')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
+    });
+
+    // Profile
+    Route::prefix('/user')->group(function () {
+        Route::get('/profile', [UserController::class, 'profile']);
     });
 
 });

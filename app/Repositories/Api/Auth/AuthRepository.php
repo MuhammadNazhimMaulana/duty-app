@@ -9,7 +9,6 @@ use App\Http\Requests\Auth\{RegisterRequest, LoginRequest, ConfirmResetPasswordR
 use App\Mail\ForgetPasswordMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Exception;
