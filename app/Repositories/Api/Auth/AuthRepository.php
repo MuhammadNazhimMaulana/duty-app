@@ -129,7 +129,7 @@ class AuthRepository implements AuthInterface
             return $this->success();
         } catch (Exception $e) {
             DB::rollBack();
-            return $this->error(400, null, $e->getMessage());
+            return $this->error(400, null, 'Sepertinya ada yang salah dengan Reset Password');
         }        
     }
 
@@ -165,7 +165,7 @@ class AuthRepository implements AuthInterface
             return $this->success();
         } catch (Exception $e) {
             DB::rollBack();
-            return $this->error(400, null, $e->getMessage());
+            return $this->error(400, null, 'Sepertinya ada yang salah dengan Konfrimasi Reset Password');
         }
     }
 
