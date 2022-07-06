@@ -19,4 +19,9 @@ class UserController extends Controller
         return $this->userInterface->profile();
     }
 
+    public function store(StoreRequest $request)
+    {
+        return $this->userInterface->store($request);
+    }
+
 }

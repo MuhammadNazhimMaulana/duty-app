@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Profile
     Route::prefix('/user')->group(function () {
         Route::get('/profile', [UserController::class, 'profile']);
+        Route::post('/profile', [UserController::class, 'store']);
     });
 
 });
