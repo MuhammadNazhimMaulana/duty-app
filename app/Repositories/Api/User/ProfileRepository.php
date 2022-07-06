@@ -4,7 +4,7 @@ namespace App\Repositories\Api\User;
 
 use App\Interfaces\Api\User\ProfileInterface;
 use App\Traits\{ResponseBuilder};
-use App\Models\UserProfile;
+use App\Models\{User, UserProfile};
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Profile\{StoreRequest, UpdateRequest};
 use Illuminate\Support\Facades\Log;
@@ -21,12 +21,23 @@ class ProfileRepository implements ProfileInterface
             // Getting the id of user
             $uid = request()->user();
 
-            $userProfile = UserProfile::where('user_id', $uid->id)->first();
-            if (!$userProfile) return $this->error(404, null, 'Profile Belum Di set');
+            $user = User::find($uid->id);
+            if (!$user) return $this->error(404, null, 'Profile Belum Di set');
 
-            return $this->success($userProfile);
+            // Modifying return value
+            $modified = collect([$user])->map(function($item, $key){
+
+                // Adding Avatar and Balance
+                return array_merge($item->toArray(), 
+                [
+                    'profile' => $item->profile,
+                    'avatar' => $item->avatar
+                ]);
+            })->collapse();
+
+            return $this->success($modified);
         } catch (Exception $e) {
-            return $this->error(400, null, 'Whoops, looks like something went wrong #profile');
+            return $this->error(400, null, 'Sepertinya ada yang salah dengan #profile');
         }
     }
 
@@ -63,7 +74,7 @@ class ProfileRepository implements ProfileInterface
             return $this->success($profile);
         } catch (Exception $e) {
             DB::rollBack();
-            return $this->error(400, null, 'Whoops, looks like something went wrong #store profile');
+            return $this->error(400, null, 'Sepertinya ada yang salah dengan #store profile');
         }
     }
 
@@ -100,7 +111,7 @@ class ProfileRepository implements ProfileInterface
             return $this->success($userProfile);
         } catch (Exception $e) {
             DB::rollBack();
-            return $this->error(400, null, 'Whoops, looks like something went wrong #update profile');
+            return $this->error(400, null, 'Sepertinya ada yang salah dengan #update profile');
         }
     }
 
