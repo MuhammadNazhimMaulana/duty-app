@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\User\{ProfileController, AvatarController};
+use App\Http\Controllers\Api\User\{ProfileController, AvatarControlle, LogController};
+use App\Http\Controllers\Api\Admin\{ClassController};
 use App\Http\Controllers\Api\Auth\AuthController;
 
 /*
@@ -42,12 +43,21 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::put('/', [ProfileController::class, 'update']);
         });
 
-        
         // Avatar
         Route::prefix('/avatar')->group(function () {
             Route::get('/', [AvatarController::class, 'index']);
             Route::post('/', [AvatarController::class, 'store']);
             Route::put('/', [AvatarController::class, 'update']);
+        });
+        
+        // Logs
+        Route::prefix('/log')->group(function () {
+            Route::get('/', [LogController::class, 'index']);
+        });
+
+        // Class
+        Route::prefix('/class')->group(function () {
+            Route::get('/', [ClassController::class, 'index']);
         });
 
     });

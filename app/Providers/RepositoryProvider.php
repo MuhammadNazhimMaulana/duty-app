@@ -35,6 +35,18 @@ class RepositoryProvider extends ServiceProvider
             'App\Interfaces\Api\User\AvatarInterface',
             'App\Repositories\Api\User\AvatarRepository'
         );
+        
+        // User Log
+        $this->app->bind(
+            'App\Interfaces\Api\User\LogInterface',
+            'App\Repositories\Api\User\LogRepository'
+        );
+        
+        // Class
+        $this->app->bind(
+            'App\Interfaces\Api\Admin\ClassInterface',
+            'App\Repositories\Api\Admin\ClassRepository'
+        );
     }
 
     /**
