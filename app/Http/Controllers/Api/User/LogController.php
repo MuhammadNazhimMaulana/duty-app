@@ -17,4 +17,9 @@ class LogController extends Controller
     {
         return $this->logInterface->index();
     }
+
+    public function store(int $id, Request $request)
+    {
+        return $this->logInterface->store($id, $request);
+    }
 }
