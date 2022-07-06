@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\User\{UserController};
+use App\Http\Controllers\Api\User\{ProfileController, AvatarController};
 use App\Http\Controllers\Api\Auth\AuthController;
 
 /*
@@ -32,11 +32,22 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
     });
 
-    // Profile
+    // User
     Route::prefix('/user')->group(function () {
-        Route::get('/profile', [UserController::class, 'profile']);
-        Route::post('/profile', [UserController::class, 'store']);
-        Route::put('/profile', [UserController::class, 'update']);
+        
+        // Profile
+        Route::prefix('/profile')->group(function () {
+            Route::get('/', [ProfileController::class, 'profile']);
+            Route::post('/', [ProfileController::class, 'store']);
+            Route::put('/', [ProfileController::class, 'update']);
+        });
+
+        
+        // Avatar
+        Route::prefix('/avatar')->group(function () {
+            Route::get('/', [AvatarController::class, 'index']);
+        });
+
     });
 
 });

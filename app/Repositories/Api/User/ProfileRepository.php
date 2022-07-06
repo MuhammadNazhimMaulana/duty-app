@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Api\User;
 
-use App\Interfaces\Api\User\UserInterface;
+use App\Interfaces\Api\User\ProfileInterface;
 use App\Traits\{ResponseBuilder};
 use App\Models\UserProfile;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Exception;
 
-class UserRepository implements UserInterface
+class ProfileRepository implements ProfileInterface
 {
     use ResponseBuilder;
 

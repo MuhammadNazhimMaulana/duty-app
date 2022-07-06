@@ -24,10 +24,16 @@ class RepositoryProvider extends ServiceProvider
             'App\Repositories\Api\Auth\AuthRepository'
         );
 
-        // User
+        // User Profile
         $this->app->bind(
-            'App\Interfaces\Api\User\UserInterface',
-            'App\Repositories\Api\User\UserRepository'
+            'App\Interfaces\Api\User\ProfileInterface',
+            'App\Repositories\Api\User\ProfileRepository'
+        );
+        
+        // User Avatar
+        $this->app->bind(
+            'App\Interfaces\Api\User\AvatarInterface',
+            'App\Repositories\Api\User\AvatarRepository'
         );
     }
 

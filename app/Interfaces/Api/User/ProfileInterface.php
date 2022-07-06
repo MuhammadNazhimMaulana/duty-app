@@ -3,7 +3,7 @@
 namespace App\Interfaces\Api\User;
 use App\Http\Requests\Profile\{StoreRequest, UpdateRequest};
 
-interface UserInterface
+interface ProfileInterface
 {
     public function profile();
 
