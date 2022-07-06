@@ -39,7 +39,7 @@ class LogRepository implements LogInterface
         }
     }
 
-    public function store(int $id, $request)
+    public function store(int $id, string $action)
     {
         DB::beginTransaction();
         try {
@@ -52,7 +52,7 @@ class LogRepository implements LogInterface
             $log->user_id = $user->id;
             $log->user_name = $user->name;
             $log->user_email = $user->email;
-            $log->action = $request->action;
+            $log->action = $action;
             $log->save();
 
             // Commit

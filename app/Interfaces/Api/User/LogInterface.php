@@ -6,5 +6,5 @@ interface LogInterface
 {
     public function index();
     
-    public function store(int $id, $request);
+    public function store(int $id, string $action);
 }

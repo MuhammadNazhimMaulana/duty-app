@@ -53,7 +53,6 @@ Route::middleware('auth:sanctum')->group(function () {
         // Logs
         Route::prefix('/log')->group(function () {
             Route::get('/', [LogController::class, 'index']);
-            // Route::post('/{id}', [LogController::class, 'store']);
         });
 
         // Class
