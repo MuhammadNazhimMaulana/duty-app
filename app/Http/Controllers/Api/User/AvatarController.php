@@ -28,9 +28,4 @@ class AvatarController extends Controller
     {
         return $this->avatarInterface->update($request);
     }
-
-    public function delete()
-    {
-        return $this->avatarInterface->delete();
-    }
 }

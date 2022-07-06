@@ -8,4 +8,6 @@ interface AvatarInterface
     public function index();
 
     public function store(StoreRequest $request);
+
+    public function update(UpdateRequest $request);
 }

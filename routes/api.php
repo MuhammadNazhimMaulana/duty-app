@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('/avatar')->group(function () {
             Route::get('/', [AvatarController::class, 'index']);
             Route::post('/', [AvatarController::class, 'store']);
+            Route::put('/', [AvatarController::class, 'update']);
         });
 
     });
