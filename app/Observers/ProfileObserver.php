@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Models\UserProfile;
-use Throwable;
 use App\Repositories\Api\User\LogRepository;
 use Illuminate\Support\Facades\Log;
 
