@@ -13,11 +13,27 @@ class LogRepository implements LogInterface
 {
     use ResponseBuilder;
 
+    public function __construct()
+    {
+        // Per Page
+        $this->perPage = request()->perPage ?: 20;
+
+        // Current Page
+        $this->currentPage = request()->currentPage ?: 1;
+    }
+
     public function index()
     {
         try {
-            Log::info(request()->header());
-            return $this->success();
+            // Getting Id
+            $uid = request()->user();
+            
+            // Finding User
+            $userLog = UserLog::where('user_id', $uid->id)->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+            if (!$userLog) return $this->error(404, null, 'Anda Belum Ada Aktivitas');
+
+
+            return $this->success($userLog);
         } catch (Exception $e) {
             return $this->error(400, null, 'Sepertinya ada yang salah dengan #index');
         }
