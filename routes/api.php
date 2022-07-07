@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\User\{ProfileController, AvatarControlle, LogController};
+use App\Http\Controllers\Api\User\{ProfileController, AvatarController, LogController};
 use App\Http\Controllers\Api\Admin\{ClassController};
 use App\Http\Controllers\Api\Auth\AuthController;
 
