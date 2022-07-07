@@ -76,6 +76,13 @@ class ClassRepository implements ClassInterface
             // Kepemilikan kelas
             if($class->admin_id !== $user->id) return $this->error(403, null, 'Anda Bukan Pembuat Kelas Ini');
 
+            // Checking Duplicate new name
+            if($class->class_name !== $request->class_name)
+            {
+                $duplicate = OnlineClass::where('class_name', $request->class_name)->first();
+                if($duplicate) return $this->error(422, null, 'Nama Kelas Baru Sudah ada');
+            }
+
             $class->class_name = $request->class_name; 
             $class->save();
 
