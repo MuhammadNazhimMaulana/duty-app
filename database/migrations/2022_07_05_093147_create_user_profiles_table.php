@@ -16,9 +16,10 @@ class CreateUserProfilesTable extends Migration
         Schema::create('user_profiles', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('online_class_id');
             $table->string('full_name');
             $table->enum('gender', ['Male', 'Female']);
-            $table->string('class');
+            $table->string('class_name');
             $table->string('hobby');
             $table->string('address');
             $table->integer('age');            

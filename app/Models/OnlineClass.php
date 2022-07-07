@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class OnlineClass extends Model
 {
     use HasFactory;
+
+    // Relationship
+    public function userProfile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
 }

@@ -14,4 +14,9 @@ class UserProfile extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function onlineClass()
+    {
+        return $this->belongsTo(OnlineClass::class);
+    }  
 }

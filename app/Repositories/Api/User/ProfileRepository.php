@@ -4,7 +4,7 @@ namespace App\Repositories\Api\User;
 
 use App\Interfaces\Api\User\ProfileInterface;
 use App\Traits\{ResponseBuilder};
-use App\Models\{User, UserProfile};
+use App\Models\{User, UserProfile, OnlineClass};
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Profile\{StoreRequest, UpdateRequest};
 use Illuminate\Support\Facades\Log;
@@ -31,13 +31,14 @@ class ProfileRepository implements ProfileInterface
                 return array_merge($item->toArray(), 
                 [
                     'profile' => $item->profile,
+                    'class' => $item->profile->onlineClass,
                     'avatar' => $item->avatar
                 ]);
             })->collapse();
 
             return $this->success($modified);
         } catch (Exception $e) {
-            return $this->error(400, null, 'Sepertinya ada yang salah dengan #profile');
+            return $this->error(400, null, $e->getMessage());
         }
     }
 
@@ -55,11 +56,16 @@ class ProfileRepository implements ProfileInterface
             $userProfile = UserProfile::where('user_id', $uid->id)->first();
             if ($userProfile) return $this->error(404, null, 'Store Profile Hanya Sekali');
 
+            // Finding Class
+            $class = OnlineClass::find($request->class_id);
+            if(!$class) return $this->error(404, null, 'Kelas Tidak Ditemukan');
+
             $profile = new UserProfile;
             $profile->user_id = $uid->id;
+            $profile->online_class_id = $request->class_id;
             $profile->full_name = $request->full_name;
             $profile->gender = $request->gender;
-            $profile->class = $request->class;
+            $profile->class_name = $class->class_name;
             $profile->hobby = $request->hobby;
             $profile->address = $request->address;
             $profile->date_of_birth = $request->date_of_birth;
@@ -93,10 +99,14 @@ class ProfileRepository implements ProfileInterface
             $userProfile = UserProfile::where('user_id', $uid->id)->first();
             if (!$userProfile) return $this->error(404, null, 'Profile Belum di Set');
 
-            
+            // Finding Class
+            $class = OnlineClass::find($request->class_id);
+            if(!$class) return $this->error(404, null, 'Kelas Tidak Ditemukan');
+
             $userProfile->full_name = $request->full_name;
+            $userProfile->online_class_id = $request->class_id;
             $userProfile->gender = $request->gender;
-            $userProfile->class = $request->class;
+            $userProfile->class_name = $class->class_name;
             $userProfile->hobby = $request->hobby;
             $userProfile->address = $request->address;
             $userProfile->date_of_birth = $request->date_of_birth;
