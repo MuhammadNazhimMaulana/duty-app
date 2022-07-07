@@ -14,11 +14,47 @@ class ClassRepository implements ClassInterface
 {
     use ResponseBuilder;
 
+    public function __construct()
+    {
+        // Per Page
+        $this->perPage = request()->perPage ?: 20;
+
+        // Current Page
+        $this->currentPage = request()->currentPage ?: 1;
+    }
+
     public function index()
     {
         try {
-            Log::info(request()->header());
-            return $this->success();
+            // Getting the id of user
+            $uid = request()->user();
+
+            // Checking Role
+            if($uid->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
+
+            // List of class and paginate
+            $listClass = OnlineClass::where('admin_id', $uid->id)->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+
+            return $this->success($listClass);
+        } catch (Exception $e) {
+            return $this->error(400, null, 'Sepertinya ada yang salah dengan #index');
+        }
+    }
+
+    public function show(int $id)
+    {
+        try {
+            // Getting the id of user
+            $uid = request()->user();
+
+            // Checking Role
+            if($uid->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
+
+            // List of class and paginate
+            $class = OnlineClass::where('admin_id', $uid->id)->where('id', $id)->first();
+            if(!$class) return $this->error(404, null, 'Kelas Tidak Ditemukan');
+
+            return $this->success($class);
         } catch (Exception $e) {
             return $this->error(400, null, 'Sepertinya ada yang salah dengan #index');
         }

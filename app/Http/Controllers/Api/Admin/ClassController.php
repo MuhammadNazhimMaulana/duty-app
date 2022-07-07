@@ -19,6 +19,11 @@ class ClassController extends Controller
         return $this->classIneterface->index();
     }
 
+    public function show(int $id)
+    {
+        return $this->classIneterface->show($id);
+    }
+
     public function store(StoreRequest $request)
     {
         return $this->classIneterface->store($request);
