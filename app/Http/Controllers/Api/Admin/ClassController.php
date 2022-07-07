@@ -23,4 +23,9 @@ class ClassController extends Controller
     {
         return $this->classIneterface->store($request);
     }
+
+    public function update(UpdateRequest $request, int $id)
+    {
+        return $this->classIneterface->update($request, $id);
+    }
 }
