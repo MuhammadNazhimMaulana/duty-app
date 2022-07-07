@@ -58,6 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
         // Class
         Route::prefix('/class')->group(function () {
             Route::get('/', [ClassController::class, 'index']);
+            Route::post('/', [ClassController::class, 'store']);
         });
 
     });
