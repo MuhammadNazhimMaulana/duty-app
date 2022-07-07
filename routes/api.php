@@ -60,6 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/', [ClassController::class, 'index']);
             Route::post('/', [ClassController::class, 'store']);
             Route::put('/{id}', [ClassController::class, 'update']);
+            Route::delete('/{id}', [ClassController::class, 'delete']);
         });
 
     });

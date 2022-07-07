@@ -28,4 +28,9 @@ class ClassController extends Controller
     {
         return $this->classIneterface->update($request, $id);
     }
+
+    public function delete(int $id)
+    {
+        return $this->classIneterface->delete($id);
+    }
 }

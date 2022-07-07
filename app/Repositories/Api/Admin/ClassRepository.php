@@ -89,4 +89,36 @@ class ClassRepository implements ClassInterface
         }
     }
 
+    public function delete(int $id)
+    {
+        DB::beginTransaction();
+        try {
+            // Getting the id of user
+            $uid = request()->user();
+
+            $user = User::find($uid->id);
+            if (!$user) return $this->error(404, null, 'User Tidak Ditemukan');
+            
+            if($user->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
+            
+            // Cek Kelas dan admin id
+            $class = OnlineClass::find($id);
+            if (!$class) return $this->error(404, null, 'Kelas Tidak Ditemukan');
+
+            // Kepemilikan kelas
+            if($class->admin_id !== $user->id) return $this->error(403, null, 'Anda Bukan Pembuat Kelas Ini');
+
+            // Delete
+            $class->delete();
+
+            // Commit
+            DB::commit();
+
+            return $this->success();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $this->error(400, null, 'Sepertinya ada yang salah dengan #delete Class');
+        }
+    }
+
 }
