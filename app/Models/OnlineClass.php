@@ -14,4 +14,9 @@ class OnlineClass extends Model
     {
         return $this->hasOne(UserProfile::class);
     }
+
+    public function tasks()
+    {
+        return $this->belongsToMany(tasks::class);
+    }
 }
