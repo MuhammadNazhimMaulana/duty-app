@@ -24,7 +24,7 @@ class AvatarRepository implements AvatarInterface
 
             return $this->success($uid);
         } catch (Exception $e) {
-            return $this->error(400, null, 'Ada yang salah dengan #avatar');
+            return $this->error(400, null, 'Sepertinya Ada yang salah dengan #avatar');
         }
     }
 
@@ -54,7 +54,7 @@ class AvatarRepository implements AvatarInterface
             return $this->success($avatar);
         } catch (Exception $e) {
             DB::rollBack();
-            return $this->error(400, null, 'Ada yang salah dengan #store avatar');
+            return $this->error(400, null, 'Sepertinya ada yang salah dengan #store avatar');
         }
     }
 
@@ -86,7 +86,7 @@ class AvatarRepository implements AvatarInterface
             return $this->success($userAvatar);
         } catch (Exception $e) {
             DB::rollBack();
-            return $this->error(400, null, 'Ada yang salah dengan #update avatar');
+            return $this->error(400, null, 'Sepertinya Ada yang salah dengan #update avatar');
         }
     }
 
