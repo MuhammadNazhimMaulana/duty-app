@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\Api\Admin\TaskInterface;
-use App\Http\Requests\ClassOnline\{StoreRequest, UpdateRequest};
+use App\Http\Requests\Task\{StoreRequest, UpdateRequest};
 use Illuminate\Http\Request;
 
 class TaskController extends Controller

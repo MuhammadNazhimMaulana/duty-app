@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Interfaces\Api\Admin;
-use App\Http\Requests\ClassOnline\{StoreRequest, UpdateRequest};
+use App\Http\Requests\Task\{StoreRequest, UpdateRequest};
 
 interface TaskInterface
 {
