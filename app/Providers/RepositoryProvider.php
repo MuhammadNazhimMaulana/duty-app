@@ -47,6 +47,12 @@ class RepositoryProvider extends ServiceProvider
             'App\Interfaces\Api\Admin\ClassInterface',
             'App\Repositories\Api\Admin\ClassRepository'
         );
+        
+        // Task
+        $this->app->bind(
+            'App\Interfaces\Api\Admin\TaskInterface',
+            'App\Repositories\Api\Admin\TaskRepository'
+        );
     }
 
     /**
