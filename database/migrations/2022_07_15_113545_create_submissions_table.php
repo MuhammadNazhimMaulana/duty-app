@@ -19,6 +19,7 @@ class CreateSubmissionsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('task_id');
             $table->string('task_title');
+            $table->string('document_path');
             $table->enum('submission', ['Late', 'On Time']);
             $table->timestamps();
         });

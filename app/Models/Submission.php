@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Submission extends Model
 {
     use HasFactory;
+
+    // Submissions
+    const ONTIME = 'On Time';
+    const LATE = 'Late';
 }
