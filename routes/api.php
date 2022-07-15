@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\User\{ProfileController, AvatarController, LogController};
-use App\Http\Controllers\Api\Admin\{ClassController};
+use App\Http\Controllers\Api\Admin\{ClassController, TaskController};
 use App\Http\Controllers\Api\Auth\AuthController;
 
 /*
@@ -62,6 +62,15 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/{id}', [ClassController::class, 'show']);
             Route::put('/{id}', [ClassController::class, 'update']);
             Route::delete('/{id}', [ClassController::class, 'delete']);
+        });
+
+        // Task
+        Route::prefix('/task')->group(function () {
+            Route::get('/', [TaskController::class, 'index']);
+            Route::post('/', [TaskController::class, 'store']);
+            Route::get('/{id}', [TaskController::class, 'show']);
+            Route::put('/{id}', [TaskController::class, 'update']);
+            Route::delete('/{id}', [TaskController::class, 'delete']);
         });
 
     });

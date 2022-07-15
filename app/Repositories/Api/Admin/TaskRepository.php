@@ -5,7 +5,7 @@ namespace App\Repositories\Api\Admin;
 use App\Interfaces\Api\Admin\TaskInterface;
 use App\Http\Requests\Task\{StoreRequest, UpdateRequest};
 use Illuminate\Support\Facades\DB;
-use App\Models\{OnlineClass, User};
+use App\Models\{OnlineClass, Task, User};
 use App\Traits\{ResponseBuilder};
 use Illuminate\Support\Facades\Log;
 use Exception;
@@ -33,7 +33,7 @@ class TaskRepository implements TaskInterface
             if($uid->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
 
             // List of class and paginate
-            $listClass = OnlineClass::where('admin_id', $uid->id)->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+            $listClass = Task::where('admin_id', $uid->id)->paginate($this->perPage, ['*'], 'page', $this->currentPage);
 
             return $this->success($listClass);
         } catch (Exception $e) {
@@ -51,12 +51,12 @@ class TaskRepository implements TaskInterface
             if($uid->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
 
             // List of class and paginate
-            $class = OnlineClass::where('admin_id', $uid->id)->where('id', $id)->first();
-            if(!$class) return $this->error(404, null, 'Kelas Tidak Ditemukan');
+            $task = Task::where('admin_id', $uid->id)->where('id', $id)->first();
+            if(!$task) return $this->error(404, null, 'Kelas Tidak Ditemukan');
 
-            return $this->success($class);
+            return $this->success($task);
         } catch (Exception $e) {
-            return $this->error(400, null, 'Sepertinya ada yang salah dengan #index');
+            return $this->error(400, null, 'Sepertinya ada yang salah dengan #show');
         }
     }
 
@@ -71,17 +71,24 @@ class TaskRepository implements TaskInterface
             $user = User::find($uid->id);
             if (!$user) return $this->error(404, null, 'User Tidak Ditemukan');
 
+            $task = OnlineClass::find($request->class_id);
+            if (!$task) return $this->error(404, null, 'Kelas Tidak Ditemukan');
+
             if($user->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
 
             // Cek Duplikat
-            $duplicate = OnlineClass::where('class_name', $request->class_name)->first();
-            if($duplicate) return $this->error(422, null, 'Nama Duplikat');
+            $duplicate = Task::where('title', $request->title)->first();
+            if($duplicate) return $this->error(422, null, 'Judul Duplikat');
 
-            $class = new OnlineClass;
-            $class->admin_id = $user->id;
-            $class->admin_name = $user->name;
-            $class->class_name = $request->class_name; 
-            $class->save();
+            $task = new Task;
+            $task->admin_id = $user->id;
+            $task->title = $request->title; 
+            $task->description = $request->description; 
+            $task->expired_at = $request->expired_at; 
+            $task->save();
+
+            // Save class and the task
+            $task->onlineClasses()->attach($request->class_id);
 
             // Commit
             DB::commit();
@@ -89,7 +96,7 @@ class TaskRepository implements TaskInterface
             return $this->success($user);
         } catch (Exception $e) {
             DB::rollBack();
-            return $this->error(400, null, 'Sepertinya ada yang salah dengan #store Class');
+            return $this->error(400, null, 'Sepertinya ada yang salah dengan #store Task');
         }
     }
 
@@ -106,21 +113,23 @@ class TaskRepository implements TaskInterface
             if($user->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
             
             // Cek Kelas dan admin id
-            $class = OnlineClass::find($id);
-            if (!$class) return $this->error(404, null, 'Kelas Tidak Ditemukan');
+            $task = Task::find($id);
+            if (!$task) return $this->error(404, null, 'Tugas Tidak Ditemukan');
 
             // Kepemilikan kelas
-            if($class->admin_id !== $user->id) return $this->error(403, null, 'Anda Bukan Pembuat Kelas Ini');
+            if($task->admin_id !== $user->id) return $this->error(403, null, 'Anda Bukan Pembuat Tugas Ini');
 
             // Checking Duplicate new name
-            if($class->class_name !== $request->class_name)
+            if($task->title !== $request->title)
             {
-                $duplicate = OnlineClass::where('class_name', $request->class_name)->first();
-                if($duplicate) return $this->error(422, null, 'Nama Kelas Baru Sudah ada');
+                $duplicate = Task::where('title', $request->title)->first();
+                if($duplicate) return $this->error(422, null, 'Judul Tugas Sudah ada');
             }
 
-            $class->class_name = $request->class_name; 
-            $class->save();
+            $task->title = $request->title; 
+            $task->description = $request->description; 
+            $task->expired_at = $request->expired_at; 
+            $task->save();
 
             // Commit
             DB::commit();
@@ -128,7 +137,7 @@ class TaskRepository implements TaskInterface
             return $this->success($user);
         } catch (Exception $e) {
             DB::rollBack();
-            return $this->error(400, null, 'Sepertinya ada yang salah dengan #update Class');
+            return $this->error(400, null, 'Sepertinya ada yang salah dengan #update Task');
         }
     }
 
@@ -145,14 +154,17 @@ class TaskRepository implements TaskInterface
             if($user->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
             
             // Cek Kelas dan admin id
-            $class = OnlineClass::find($id);
-            if (!$class) return $this->error(404, null, 'Kelas Tidak Ditemukan');
+            $task = Task::find($id);
+            if (!$task) return $this->error(404, null, 'Task Tidak Ditemukan');
 
             // Kepemilikan kelas
-            if($class->admin_id !== $user->id) return $this->error(403, null, 'Anda Bukan Pembuat Kelas Ini');
+            if($task->admin_id !== $user->id) return $this->error(403, null, 'Anda Bukan Pembuat Task Ini');
+
+            // Detach many to many relationship
+            $task->onlineClasses()->detach();
 
             // Delete
-            $class->delete();
+            $task->delete();
 
             // Commit
             DB::commit();
@@ -160,7 +172,7 @@ class TaskRepository implements TaskInterface
             return $this->success();
         } catch (Exception $e) {
             DB::rollBack();
-            return $this->error(400, null, 'Sepertinya ada yang salah dengan #delete Class');
+            return $this->error(400, null, 'Sepertinya ada yang salah dengan #delete Task');
         }
     }
 
