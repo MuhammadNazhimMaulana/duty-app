@@ -161,12 +161,6 @@ class SubmissionRepository implements SubmissionInterface
             $submission = Submission::find($id);
             if (!$submission) return $this->error(404, null, 'Submission Tidak Ditemukan');
 
-            // Kepemilikan kelas
-            if($submission->admin_id !== $user->id) return $this->error(403, null, 'Anda Bukan Pembuat Submission Ini');
-
-            // Detach many to many relationship
-            $submission->onlineClasses()->detach();
-
             // Delete
             $submission->delete();
 
