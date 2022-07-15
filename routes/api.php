@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\User\{ProfileController, AvatarController, LogController};
+use App\Http\Controllers\Api\User\{ProfileController, AvatarController, LogController, SubmissionController};
 use App\Http\Controllers\Api\Admin\{ClassController, TaskController};
 use App\Http\Controllers\Api\Auth\AuthController;
 
@@ -71,6 +71,15 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/{id}', [TaskController::class, 'show']);
             Route::put('/{id}', [TaskController::class, 'update']);
             Route::delete('/{id}', [TaskController::class, 'delete']);
+        });
+
+        // Task
+        Route::prefix('/submission')->group(function () {
+            Route::get('/', [SubmissionController::class, 'index']);
+            Route::post('/', [SubmissionController::class, 'store']);
+            Route::get('/{id}', [SubmissionController::class, 'show']);
+            Route::put('/{id}', [SubmissionController::class, 'update']);
+            Route::delete('/{id}', [SubmissionController::class, 'delete']);
         });
 
     });

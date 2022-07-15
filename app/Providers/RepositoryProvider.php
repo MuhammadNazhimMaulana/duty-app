@@ -53,6 +53,12 @@ class RepositoryProvider extends ServiceProvider
             'App\Interfaces\Api\Admin\TaskInterface',
             'App\Repositories\Api\Admin\TaskRepository'
         );
+
+        // Submission
+        $this->app->bind(
+            'App\Interfaces\Api\User\SubmissionInterface',
+            'App\Repositories\Api\User\SubmissionRepository'
+        );
     }
 
     /**
