@@ -29,7 +29,7 @@ class LogRepository implements LogInterface
             $uid = request()->user();
             
             // Finding User
-            $userLog = UserLog::where('user_id', $uid->id)->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+            $userLog = UserLog::where('user_id', $uid->id)->orderBy('created_at', 'desc')->paginate($this->perPage, ['*'], 'page', $this->currentPage);
             if (!$userLog) return $this->error(404, null, 'Anda Belum Ada Aktivitas');
 
 

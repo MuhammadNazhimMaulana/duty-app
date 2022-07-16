@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Observers\{AvatarObserver, ProfileObserver, ClassObserver};
-use App\Models\{UserProfile, UserAvatar, OnlineClass};
+use App\Observers\{AvatarObserver, ProfileObserver, ClassObserver, TaskObserver, SubmissionObserver};
+use App\Models\{UserProfile, UserAvatar, OnlineClass, Task, Submission};
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,5 +28,7 @@ class AppServiceProvider extends ServiceProvider
         UserProfile::observe(ProfileObserver::class);
         UserAvatar::observe(AvatarObserver::class);
         OnlineClass::observe(ClassObserver::class);
+        Task::observe(TaskObserver::class);
+        Submission::observe(SubmissionObserver::class);
     }
 }

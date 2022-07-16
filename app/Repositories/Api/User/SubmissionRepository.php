@@ -108,37 +108,39 @@ class SubmissionRepository implements SubmissionInterface
     {
         DB::beginTransaction();
         try {
+            // Today's time
+            $now = Carbon::now();
+
             // Getting the id of user
             $uid = request()->user();
 
             $user = User::find($uid->id);
             if (!$user) return $this->error(404, null, 'User Tidak Ditemukan');
             
-            if($user->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
-            
             // Cek Kelas dan admin id
             $submission = Submission::find($id);
-            if (!$submission) return $this->error(404, null, 'Tugas Tidak Ditemukan');
+            if (!$submission) return $this->error(404, null, 'Pengumpulan Tidak Ditemukan');
 
-            // Kepemilikan kelas
-            if($submission->admin_id !== $user->id) return $this->error(403, null, 'Anda Bukan Pembuat Tugas Ini');
+            $task = Task::find($submission->task_id);
+            if (!$task) return $this->error(404, null, 'Task Tidak Ditemukan');
 
-            // Checking Duplicate new name
-            if($submission->title !== $request->title)
+            // Checking Class
+            if($uid->profile->onlineClass->id != $submission->online_class_id) return $this->error(403, null, 'Anda Bukan Bagian Dari Kelas Ini');
+            
+            // Checking the time
+            if($task->expired_at > $now)
             {
-                $duplicate = Submission::where('title', $request->title)->first();
-                if($duplicate) return $this->error(422, null, 'Judul Tugas Sudah ada');
+                $submission->submission = Submission::LATE; 
+            }else{
+                $submission->submission = Submission::ONTIME; 
             }
 
-            $submission->title = $request->title; 
-            $submission->description = $request->description; 
-            $submission->expired_at = $request->expired_at; 
             $submission->save();
 
             // Commit
             DB::commit();
 
-            return $this->success($user);
+            return $this->success($submission);
         } catch (Exception $e) {
             DB::rollBack();
             return $this->error(400, null, 'Sepertinya ada yang salah dengan #update Submission');

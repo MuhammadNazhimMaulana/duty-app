@@ -93,7 +93,7 @@ class TaskRepository implements TaskInterface
             // Commit
             DB::commit();
 
-            return $this->success($user);
+            return $this->success($task);
         } catch (Exception $e) {
             DB::rollBack();
             return $this->error(400, null, 'Sepertinya ada yang salah dengan #store Task');
