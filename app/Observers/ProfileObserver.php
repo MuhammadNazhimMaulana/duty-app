@@ -53,7 +53,31 @@ class ProfileObserver
     public function updated(UserProfile $userProfile)
     {
         {
-            $this->storeteLog('Mengupdate Profile #'.$userProfile->id);   
+            $this->storeteLog('Mengupdate Profile #'.$userProfile->id);
+            
+            // Updating Class
+            DB::beginTransaction();
+            try {
+
+                // Checking the changes of class
+                if($userProfile->online_class_id != $userProfile->getOriginal('online_class_id'))
+                {
+                    // Reducing number of student for teh old class
+                    $old_class = OnlineClass::find($userProfile->getOriginal('online_class_id'));
+                    $old_class->total_students = $old_class->total_students - 1;
+                    $old_class->save();
+
+                    // Adding the number of students
+                    $class = OnlineClass::find($userProfile->online_class_id);
+                    $class->total_students = $class->total_students + 1;
+                    $class->save();
+                }
+                
+                DB::commit();
+            } catch (Throwable $e) {
+                DB::rollback();
+                Log::info($e);
+            }
         } 
     }
 
