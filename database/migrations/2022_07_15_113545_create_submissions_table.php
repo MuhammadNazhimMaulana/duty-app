@@ -21,6 +21,7 @@ class CreateSubmissionsTable extends Migration
             $table->string('task_title');
             $table->string('document_path');
             $table->enum('submission', ['Late', 'On Time']);
+            $table->text('note');
             $table->timestamps();
         });
     }

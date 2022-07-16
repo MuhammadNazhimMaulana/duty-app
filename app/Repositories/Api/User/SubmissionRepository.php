@@ -85,12 +85,20 @@ class SubmissionRepository implements SubmissionInterface
             $submission->task_title = $task->title; 
 
             // Checking the time
-            if($task->expired_at > $now)
+            if($task->expired_at < $now)
             {
                 $submission->submission = Submission::LATE; 
             }else{
                 $submission->submission = Submission::ONTIME; 
             }
+            
+            // Chekcing File
+            if ($request->file('file_task')) {
+                $submission->document_path = $request->file('file_task')->store('Submission');
+            }
+
+            // Getting The difference
+            $submission->note = $now->diffForHumans($task->expired_at);
 
             $submission->save();
 
@@ -100,7 +108,7 @@ class SubmissionRepository implements SubmissionInterface
             return $this->success($submission);
         } catch (Exception $e) {
             DB::rollBack();
-            return $this->error(400, null, 'Sepertinya ada yang salah dengan #store Submission');
+            return $this->error(400, null, $e->getMessage());
         }
     }
 
@@ -134,6 +142,9 @@ class SubmissionRepository implements SubmissionInterface
             }else{
                 $submission->submission = Submission::ONTIME; 
             }
+
+            // Getting The difference
+            $submission->note = $now->diffForHumans($task->expired_at);
 
             $submission->save();
 
