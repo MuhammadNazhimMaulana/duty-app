@@ -17,7 +17,8 @@ class CreateTasksTable extends Migration
             $table->id();
             $table->unsignedBigInteger('admin_id');
             $table->string('title');
-            $table->integer('total_collectorss')->default(0);
+            $table->integer('total_collectors')->default(0);
+            $table->integer('total_maximum_collectors')->default(0);
             $table->longText('description');
             $table->timestamp('expired_at');
             $table->timestamps();

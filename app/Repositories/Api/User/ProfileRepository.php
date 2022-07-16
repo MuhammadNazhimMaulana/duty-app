@@ -31,7 +31,7 @@ class ProfileRepository implements ProfileInterface
                 return array_merge($item->toArray(), 
                 [
                     'profile' => $item->profile,
-                    'class' => $item->profile->onlineClass,
+                    'class' => $item->profile ? $item->profile->onlineClass : 'Belum Ada',
                     'avatar' => $item->avatar
                 ]);
             })->collapse();

@@ -2,9 +2,11 @@
 
 namespace App\Observers;
 
-use App\Models\UserProfile;
+use App\Models\{UserProfile, OnlineClass};
 use App\Repositories\Api\User\LogRepository;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class ProfileObserver
 {
@@ -22,7 +24,23 @@ class ProfileObserver
     public function created(UserProfile $userProfile)
     {
         {
-            $this->storeteLog('Membuat Profile #'.$userProfile->id);   
+            // Creating Log
+            $this->storeteLog('Membuat Profile #'.$userProfile->id);
+
+            // Updating Class
+            DB::beginTransaction();
+            try {
+
+                // Adding the number of students
+                $class = OnlineClass::find($userProfile->online_class_id);
+                $class->total_students = $class->total_students + 1;
+                $class->save();
+                
+                DB::commit();
+            } catch (Throwable $e) {
+                DB::rollback();
+                Log::info($e);
+            }
         } 
     }
 
