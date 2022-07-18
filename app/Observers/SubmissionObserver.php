@@ -4,6 +4,9 @@ namespace App\Observers;
 
 use App\Repositories\Api\User\LogRepository;
 use App\Models\{Submission, Task};
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class SubmissionObserver
 {
@@ -21,7 +24,22 @@ class SubmissionObserver
     public function created(Submission $submission)
     {
         {
-            $this->storeteLog('Membuat Pengumpulan #'.$submission->id);   
+            $this->storeteLog('Membuat Pengumpulan #'.$submission->id);
+            
+            // Updating Class
+            DB::beginTransaction();
+            try {
+
+                // Adding the number of students
+                $class = Task::find($submission->task_id);
+                $class->total_collectorss = $class->total_collectorss + 1;
+                $class->save();
+                
+                DB::commit();
+            } catch (Throwable $e) {
+                DB::rollback();
+                Log::info($e);
+            }
         } 
     }
 
