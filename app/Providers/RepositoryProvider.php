@@ -59,6 +59,12 @@ class RepositoryProvider extends ServiceProvider
             'App\Interfaces\Api\User\SubmissionInterface',
             'App\Repositories\Api\User\SubmissionRepository'
         );
+
+        // Score
+        $this->app->bind(
+            'App\Interfaces\Api\Admin\ScoreInterface',
+            'App\Repositories\Api\Admin\ScoreRepository'
+        );
     }
 
     /**

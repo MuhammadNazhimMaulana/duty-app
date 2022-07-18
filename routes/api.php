@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\User\{ProfileController, AvatarController, LogController, SubmissionController};
-use App\Http\Controllers\Api\Admin\{ClassController, TaskController};
+use App\Http\Controllers\Api\Admin\{ClassController, TaskController, ScoreController};
 use App\Http\Controllers\Api\Auth\AuthController;
 
 /*
@@ -80,6 +80,15 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/{id}', [SubmissionController::class, 'show']);
             Route::put('/{id}', [SubmissionController::class, 'update']);
             Route::delete('/{id}', [SubmissionController::class, 'delete']);
+        });
+
+        // Score
+        Route::prefix('/score')->group(function () {
+            Route::get('/', [ScoreController::class, 'index']);
+            Route::post('/', [ScoreController::class, 'store']);
+            Route::get('/{id}', [ScoreController::class, 'show']);
+            Route::put('/{id}', [ScoreController::class, 'update']);
+            Route::delete('/{id}', [ScoreController::class, 'delete']);
         });
 
     });
