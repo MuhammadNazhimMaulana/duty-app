@@ -33,7 +33,7 @@ class ScoreRepository implements ScoreInterface
             if($uid->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
 
             // List of class and paginate
-            $listClass = Task::where('admin_id', $uid->id)->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+            $listClass = Score::where('admin_id', $uid->id)->paginate($this->perPage, ['*'], 'page', $this->currentPage);
 
             return $this->success($listClass);
         } catch (Exception $e) {
