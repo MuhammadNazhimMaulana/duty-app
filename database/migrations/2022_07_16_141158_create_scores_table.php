@@ -17,6 +17,7 @@ class CreateScoresTable extends Migration
             $table->id();
             $table->string('admin_name');
             $table->unsignedBigInteger('admin_id');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('submission_id');
             $table->integer('user_score');
             $table->text('note_for_user')->default('Tidak Ada Catatan');

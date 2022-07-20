@@ -30,12 +30,17 @@ class ScoreRepository implements ScoreInterface
             $uid = request()->user();
 
             // Checking Role
-            if($uid->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
+            if($uid->hasRole(User::ROLE_ADMIN))
+            {
+                // List of all score and paginate
+                $listScore = Score::where('admin_id', $uid->id)->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+            }else{
+                // List of score and paginate
+                $listScore = Score::where('user_id', $uid->id)->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+            }
 
-            // List of class and paginate
-            $listClass = Score::where('admin_id', $uid->id)->paginate($this->perPage, ['*'], 'page', $this->currentPage);
 
-            return $this->success($listClass);
+            return $this->success($listScore);
         } catch (Exception $e) {
             return $this->error(400, null, 'Sepertinya ada yang salah dengan #index');
         }
