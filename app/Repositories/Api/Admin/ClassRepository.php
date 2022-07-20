@@ -71,7 +71,7 @@ class ClassRepository implements ClassInterface
             $user = User::find($uid->id);
             if (!$user) return $this->error(404, null, 'User Tidak Ditemukan');
 
-            if($user->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
+            if(!$user->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
 
             // Cek Duplikat
             $duplicate = OnlineClass::where('class_name', $request->class_name)->first();
@@ -103,7 +103,7 @@ class ClassRepository implements ClassInterface
             $user = User::find($uid->id);
             if (!$user) return $this->error(404, null, 'User Tidak Ditemukan');
             
-            if($user->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
+            if(!$user->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
             
             // Cek Kelas dan admin id
             $class = OnlineClass::find($id);
@@ -142,7 +142,7 @@ class ClassRepository implements ClassInterface
             $user = User::find($uid->id);
             if (!$user) return $this->error(404, null, 'User Tidak Ditemukan');
             
-            if($user->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
+            if(!$user->hasRole(User::ROLE_ADMIN)) return $this->error(403, null, 'Anda Tidak Memiliki Role Admin');
             
             // Cek Kelas dan admin id
             $class = OnlineClass::find($id);
