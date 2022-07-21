@@ -182,7 +182,7 @@ class AuthRepository implements AuthInterface
             
             return $this->success();
         } catch (Exception $e) {
-            return $this->error(400, null, 'Sepertinya ada yang salah dengan Logout');
+            return $this->error(400, null, 'Sepertinya ada sesuatu yang salah dengan Logout');
         }
     }
 
