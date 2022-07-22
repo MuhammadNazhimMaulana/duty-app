@@ -153,7 +153,7 @@ class AuthRepository implements AuthInterface
             if($now->diffInMinutes($vCode->expired_at) > 1) return $this->error(422, null, 'Kode Verifikasi Expired');
 
             // Chacking the code
-            if($request->code != $vCode->code) return $this->error(422, null, 'Kode Verifikasi Salah');
+            if($request->code != $vCode->code) return $this->error(422, null, 'Kode Verifikasi yang Dimasukkan Salah');
 
             // If everythingh is good
             $user->password = Hash::make($request->password);
@@ -182,7 +182,7 @@ class AuthRepository implements AuthInterface
             
             return $this->success();
         } catch (Exception $e) {
-            return $this->error(400, null, 'Sepertinya ada sesuatu yang salah dengan Logout');
+            return $this->error(400, null, 'Sepertinya ada yang salah dengan Logout');
         }
     }
 
