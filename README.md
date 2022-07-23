@@ -1,3 +1,3 @@
 # Duty App (API)
 
-Here you can use this api to build a simple task app
+Here you can use this api for building a simple task app 
