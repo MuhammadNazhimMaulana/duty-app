@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\{OnlineClass, Task, User, Score};
 use App\Traits\{ResponseBuilder};
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 use Exception;
 
 class ScoreRepository implements ScoreInterface
