@@ -7,7 +7,6 @@ use App\Http\Requests\ClassOnline\{StoreRequest, UpdateRequest};
 use Illuminate\Support\Facades\DB;
 use App\Models\{OnlineClass, User};
 use App\Traits\{ResponseBuilder};
-use Illuminate\Support\Facades\Log;
 use Exception;
 
 class ClassRepository implements ClassInterface
