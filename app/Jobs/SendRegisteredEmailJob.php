@@ -36,7 +36,6 @@ class SendRegisteredEmailJob implements ShouldQueue
      */
     public function handle()
     {
-        Log::info($this->body);
         Mail::to($this->register->email)->send(new RegisteredMail($this->body));
     }
 }
