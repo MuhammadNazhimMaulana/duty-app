@@ -16,9 +16,9 @@ class RegisteredMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($body)
     {
-        //
+        $this->body = $body;
     }
 
     /**
@@ -28,6 +28,8 @@ class RegisteredMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.RegisteredMail');
+        return $this->subject('Duty App')
+        ->markdown('emails.RegisteredMail')
+        ->with('body',$this->body);
     }
 }

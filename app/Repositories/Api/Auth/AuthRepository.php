@@ -10,6 +10,7 @@ use App\Mail\ForgetPasswordMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use App\Jobs\SendRegisteredEmailJob;
 use Illuminate\Support\Facades\Mail;
 use Exception;
 
@@ -68,7 +69,13 @@ class AuthRepository implements AuthInterface
 
             // Assigning Role
             $register->assignRole(User::ROLE_USER);
-            
+
+            $body = [
+                'title' => 'Berhasil Mendaftar'
+            ];
+
+            dispatch(new SendRegisteredEmailJob($body, $register));
+
             // Commit
             DB::commit();
 
