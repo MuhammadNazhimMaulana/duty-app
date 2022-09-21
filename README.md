@@ -1,3 +1,3 @@
 # Duty App
 
-A simple api for building a task management app 
+Simple api for building a task management app 
