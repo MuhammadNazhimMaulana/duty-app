@@ -21,7 +21,7 @@ class ClassObserver
     public function created(OnlineClass $onlineClass)
     {
         {
-            $this->storeteLog('Membuat Kelas #'.$onlineClass->id);   
+            $this->storeLog('Membuat Kelas #'.$onlineClass->id);   
         } 
     }
 
@@ -34,7 +34,7 @@ class ClassObserver
     public function updated(OnlineClass $onlineClass)
     {
         {
-            $this->storeteLog('Mengupdate Kelas #'.$onlineClass->id);   
+            $this->storeLog('Mengupdate Kelas #'.$onlineClass->id);   
         } 
     }
 
@@ -47,12 +47,12 @@ class ClassObserver
     public function deleted(OnlineClass $onlineClass)
     {
         {
-            $this->storeteLog('Menghapus Kelas #'.$onlineClass->id);   
+            $this->storeLog('Menghapus Kelas #'.$onlineClass->id);   
         } 
     }
 
     // Membuat Log
-    protected function storeteLog(string $action)
+    protected function storeLog(string $action)
     {
         (new LogRepository)->store($this->user->id, $action);
     }

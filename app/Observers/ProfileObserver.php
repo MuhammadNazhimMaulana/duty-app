@@ -25,7 +25,7 @@ class ProfileObserver
     {
         {
             // Creating Log
-            $this->storeteLog('Membuat Profile #'.$userProfile->id);
+            $this->storeLog('Membuat Profile #'.$userProfile->id);
 
             // Updating Class
             DB::beginTransaction();
@@ -53,7 +53,7 @@ class ProfileObserver
     public function updated(UserProfile $userProfile)
     {
         {
-            $this->storeteLog('Mengupdate Profile #'.$userProfile->id);
+            $this->storeLog('Mengupdate Profile #'.$userProfile->id);
             
             // Updating Class
             DB::beginTransaction();
@@ -82,7 +82,7 @@ class ProfileObserver
     }
 
     // Membuat Log
-    protected function storeteLog(string $action)
+    protected function storeLog(string $action)
     {
         (new LogRepository)->store($this->user->id, $action);
     }

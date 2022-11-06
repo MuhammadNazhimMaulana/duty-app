@@ -22,7 +22,7 @@ class AvatarObserver
     public function created(UserAvatar $userAvatar)
     {
         {
-            $this->storeteLog('Membuat Avatar #'.$userAvatar->id);   
+            $this->storeLog('Membuat Avatar #'.$userAvatar->id);   
         } 
     }
 
@@ -35,12 +35,12 @@ class AvatarObserver
     public function updated(UserAvatar $userAvatar)
     {
         {
-            $this->storeteLog('Mengupdate Avatar #'.$userAvatar->id);   
+            $this->storeLog('Mengupdate Avatar #'.$userAvatar->id);   
         } 
     }
 
     // Membuat Log
-    protected function storeteLog(string $action)
+    protected function storeLog(string $action)
     {
         (new LogRepository)->store($this->user->id, $action);
     }

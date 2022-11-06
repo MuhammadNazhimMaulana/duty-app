@@ -21,7 +21,7 @@ class TaskObserver
     public function created(Task $task)
     {
         {
-            $this->storeteLog('Membuat Tugas #'.$task->id);   
+            $this->storeLog('Membuat Tugas #'.$task->id);   
         } 
     }
 
@@ -34,7 +34,7 @@ class TaskObserver
     public function updated(Task $task)
     {
         {
-            $this->storeteLog('Mengupdate Tugas #'.$task->id);   
+            $this->storeLog('Mengupdate Tugas #'.$task->id);   
         } 
     }
 
@@ -47,12 +47,12 @@ class TaskObserver
     public function deleted(Task $task)
     {
         {
-            $this->storeteLog('Menghapus Tugas #'.$task->id);   
+            $this->storeLog('Menghapus Tugas #'.$task->id);   
         } 
     }
 
     // Membuat Log
-    protected function storeteLog(string $action)
+    protected function storeLog(string $action)
     {
         (new LogRepository)->store($this->user->id, $action);
     }

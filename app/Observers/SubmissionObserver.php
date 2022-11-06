@@ -24,7 +24,7 @@ class SubmissionObserver
     public function created(Submission $submission)
     {
         {
-            $this->storeteLog('Membuat Pengumpulan #'.$submission->id);
+            $this->storeLog('Membuat Pengumpulan #'.$submission->id);
             
             // Updating Class
             DB::beginTransaction();
@@ -52,7 +52,7 @@ class SubmissionObserver
     public function updated(Submission $submission)
     {
         {
-            $this->storeteLog('Mengupdate Pengumpulan #'.$submission->id);   
+            $this->storeLog('Mengupdate Pengumpulan #'.$submission->id);   
         } 
     }
 
@@ -65,12 +65,12 @@ class SubmissionObserver
     public function deleted(Submission $submission)
     {
         {
-            $this->storeteLog('Menghapus Pengumpulan #'.$submission->id);   
+            $this->storeLog('Menghapus Pengumpulan #'.$submission->id);   
         } 
     }
 
     // Membuat Log
-    protected function storeteLog(string $action)
+    protected function storeLog(string $action)
     {
         (new LogRepository)->store($this->user->id, $action);
     }
