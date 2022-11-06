@@ -10,6 +10,7 @@ use App\Mail\ForgetPasswordMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use App\Events\LoginActivity;
 use App\Jobs\SendRegisteredEmailJob;
 use Illuminate\Support\Facades\Mail;
 use Exception;
@@ -40,11 +41,14 @@ class AuthRepository implements AuthInterface
             // Shwoing Token
             $user->token = $token;
 
+            // Triggering Event
+            event(new LoginActivity($user));
+
             return $this->success($user);
         } catch (Exception $e) {
             // $this->report($e);
 
-            return $this->error(400, null, 'Sepertinya ada yang salah dengan Login');
+            return $this->error(400, null, $e->getMessage());
         }
     }
 
