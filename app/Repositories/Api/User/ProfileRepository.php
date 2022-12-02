@@ -7,7 +7,6 @@ use App\Traits\{ResponseBuilder};
 use App\Models\{User, UserProfile, OnlineClass};
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Profile\{StoreRequest, UpdateRequest};
-use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Exception;
 

@@ -10,7 +10,7 @@ use App\Mail\ForgetPasswordMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
-use App\Events\LoginActivity;
+use App\Events\{LoginActivity, LogutActivity};
 use App\Jobs\SendRegisteredEmailJob;
 use Illuminate\Support\Facades\Mail;
 use Exception;
@@ -190,7 +190,10 @@ class AuthRepository implements AuthInterface
 
             // Delete Token
             $user->tokens()->delete();
-            
+
+            // Triggering Event
+            event(new LogutActivity($user));
+
             return $this->success();
         } catch (Exception $e) {
             return $this->error(400, null, 'Sepertinya ada yang salah dengan Logout');
