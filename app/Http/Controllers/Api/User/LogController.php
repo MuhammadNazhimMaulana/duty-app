@@ -16,4 +16,9 @@ class LogController extends Controller
     {
         return $this->logInterface->index();
     }
+
+    public function listPdf()
+    {
+        return $this->logInterface->listPdf();
+    }
 }

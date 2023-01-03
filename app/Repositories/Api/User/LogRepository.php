@@ -7,6 +7,7 @@ use App\Traits\{ResponseBuilder};
 use Illuminate\Support\Facades\DB;
 use App\Models\{User, UserLog};
 use Illuminate\Support\Facades\Log;
+use PDF;
 use Exception;
 
 class LogRepository implements LogInterface
@@ -63,5 +64,21 @@ class LogRepository implements LogInterface
             DB::rollBack();
             return $this->error(400, null, 'Sepertinya ada yang salah dengan #store log');
         }
+    }
+
+    public function listPdf()
+    {
+        // Getting Id
+        $uid = request()->user();
+
+        $userLog = UserLog::where('user_id', $uid->id)->orderBy('created_at', 'desc')->get();
+
+        $data = [
+            'title' => 'Daftar Log Anda',
+            'logs' => $userLog
+        ];
+
+        $pdf = PDF::loadView('pdf/log', $data);
+        return $pdf->stream();
     }
 }
