@@ -34,7 +34,7 @@
         }
     </style>
 
-	<title>Log Index</title>
+	<title>Index Log</title>
 </head>
 <body>
 	<h1 class="center">{{ $title }}</h1>
