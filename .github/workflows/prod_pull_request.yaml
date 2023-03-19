@@ -1,0 +1,14 @@
+name: Pull Request To Production
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+    branches:
+      - "master"
+
+jobs:
+  pr_build:
+    uses: ./.github/workflows/integration.yaml
+    secrets: inherit

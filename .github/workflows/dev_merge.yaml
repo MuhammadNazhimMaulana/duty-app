@@ -1,0 +1,11 @@
+name: Continus Integration Development
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  dev_build:
+    uses: ./.github/workflows/integration.yaml
+    secrets: inherit

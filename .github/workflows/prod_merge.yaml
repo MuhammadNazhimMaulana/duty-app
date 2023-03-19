@@ -1,0 +1,11 @@
+name: Continus Integration Production
+
+on:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  prod_build:
+    uses: ./.github/workflows/integration.yaml
+    secrets: inherit
